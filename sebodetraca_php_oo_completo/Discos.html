@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Sebo de Traça - Discos</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #ecf0f1;
+    }
+
+    #cabecalho {
+      background-color: #000;
+      color: white;
+      padding: 20px;
+      text-align: center;
+      font-size: 28px;
+    }
+
+    .cabecalho-ofertas {
+      margin-bottom: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .navbar {
+      margin-bottom: 0;
+      border-radius: 0;
+    }
+     .navbar-brand {
+      color: #f1c40f !important;
+    }
+    #ofertas {
+      background-color: #2c3e50;
+      color: white;
+      padding: 20px;
+      min-height: 100vh;
+    }
+
+    .lista-produtos {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      justify-content: center;
+    }
+
+    .produto {
+      background-color: #34495e;
+      padding: 10px;
+      border-radius: 10px;
+      width: 200px;
+      height: 250px;
+      position: relative;
+      overflow: hidden;
+      box-shadow:  4px 6px rgba(0, 0, 0, 0.2);
+    }
+
+    .produto:hover .produto-info {
+      display: block;
+    }
+
+    .produto-info {
+      display: none;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.8);
+      color: white;
+      padding: 10px;
+      box-sizing: border-box;
+      border-radius: 10px;
+      z-index: 1;
+      text-align: center;
+    }
+
+    .produto img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+      border-radius: 5px;
+    }
+
+    .pesquisar {
+      margin-left: 300px;
+      width: 150px;
+      border-radius: 5px;
+      color: black;
+      border: none;
+      font-size: 16px;
+    }
+
+    .preco {
+      color: #f1c40f;
+      font-weight: bold;
+    }
+
+    .discoButtons {
+      font-size: 10px;
+      color: white;
+      border: none;
+      padding: 5px 10px;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-top: 5px;
+    }
+
+    .discoButtons.alterar {
+      background-color: #577ca2;
+    }
+
+    .discoButtons.remover {
+      background-color: #f1c40f;
+      color: #000;
+    }
+
+    .adicionarDiscos {
+      font-size: 16px;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      background-color: #577ca2;
+      color: white;
+      margin-left: 10px;
+    }
+
+    .edicao {
+      display: none;
+      position: fixed;
+      align-content: center;
+      z-index: 1;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0, 0, 0, 0.4);
+    }
+
+    .criarDisco {
+      display: none;
+      position: fixed;
+      align-content: center;
+      z-index: 1;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0, 0, 0, 0.4);
+    }
+
+    .conteudo-edicao {
+      background-color: #577ca2;
+      margin: auto;
+      padding: 20px;
+      border: 1px solid #888;
+      border-radius: 10px;
+      width: 80%;
+    }
+
+    .fechar {
+      color: #34495e;
+      float: right;
+      font-size: 28px;
+      font-weight: bold;
+    }
+
+    .fechar:hover {
+      color: black;
+      cursor: pointer;
+    }
+
+      #logo {
+      width: 400px;
+      height: 200px;
+      vertical-align: middle;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="cabecalho">
+    <img id="logo" src="SeboDeTraca.png" alt="Sebo de traça">
+  </div>
+  <nav class="navbar navbar-inverse">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <a class="navbar-brand" href="https://www.google.com/fbx?fbx=snake_arcade">Sebo de traça</a>
+      </div>
+      <ul class="nav navbar-nav">
+        <li class="active"><a href="Home.html">Home</a></li>
+        <li class="active"><a href="Login.html">Login</a></li>
+        <li class="active"><a href="Livros.html">Livros</a></li>
+        <li class="active"><a href="Discos.html">Discos</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <div id="ofertas">
+    <div class="cabecalho-ofertas">
+      <h2>Principais Discos:</h2>
+      <div>
+        <input type="text" class="pesquisar" id="pesquisarDisco" onkeyup="pesquisar()" placeholder="Pesquisar discos...">
+        <button class="adicionarDiscos" onclick="adicionarDisco()">Adicionar Disco</button>
+      </div>
+    </div>
+
+    <div class="lista-produtos">
+      <div class="produto" id="DarkSide">
+        <p>The Dark Side of the Moon</p>
+        <img src="https://upload.wikimedia.org/wikipedia/en/3/3b/Dark_Side_of_the_Moon.png" alt="Dark Side">
+        <div class="preco">R$ 80,00</div>
+        <div class="produto-info">
+          <p><b>Álbum:</b> The Dark Side of the Moon</p>
+          <p><b>Artista:</b> Pink Floyd</p>
+          <p><b>Gravadora:</b> Harvest Records</p>
+          <p><b>N Faixas:</b> 10</p>
+          <p><b>Ano:</b> 1973</p>
+          <button class="discoButtons alterar" onclick="abrirEdicao('darkside')">Alterar</button>
+          <button class="discoButtons remover" onclick="removerDisco('DarkSide')">Remover</button>
+        </div>
+      </div>
+
+      <div class="produto" id="Thriller">
+        <p>Thriller</p>
+        <img src="https://upload.wikimedia.org/wikipedia/en/5/55/Michael_Jackson_-_Thriller.png" alt="Thriller">
+        <div class="preco">R$ 70,00</div>
+        <div class="produto-info">
+          <p><b>Álbum:</b> Thriller</p>
+          <p><b>Artista:</b> Michael Jackson</p>
+          <p><b>Gravadora:</b> Epic Records</p>
+          <p><b>N Faixas:</b> 9</p>
+          <p><b>Ano:</b> 1982</p>
+          <button class="discoButtons alterar" onclick="abrirEdicao('thriller')">Alterar</button>
+          <button class="discoButtons remover" onclick="removerDisco('Thriller')">Remover</button>
+        </div>
+      </div>
+
+      <div class="produto" id="Credence">
+        <p>Cosmo's Factory</p>
+        <img src="https://m.media-amazon.com/images/I/71Y3Q7fD-kL._AC_SL1400_.jpg" alt="Credence">
+        <div class="preco">R$ 69,99</div>
+        <div class="produto-info">
+          <p><b>Álbum:</b> Cosmo's Factory</p>
+          <p><b>Artista:</b> Creedence Clearwater Revival</p>
+          <p><b>Gravadora:</b> Epic Records</p>
+          <p><b>N Faixas:</b> 9</p>
+          <p><b>Ano:</b> 1982</p>
+          <button class="discoButtons alterar" onclick="abrirEdicao('credence')">Alterar</button>
+          <button class="discoButtons remover" onclick="removerDisco('Credence')">Remover</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="editar" class="edicao">
+    <div class="conteudo-edicao">
+      <span class="fechar" onclick="fecharedicao()"></span>
+      <h3>Editar Disco</h3>
+      <label for="album">Álbum:</label>
+      <input type="text" id="album" class="form-control"><br>
+      <label for="artista">Artista:</label>
+      <input type="text" id="artista" class="form-control"><br>
+      <label for="gravadora">Gravadora:</label>
+      <input type="text" id="gravadora" class="form-control"><br>
+      <label for="nfaixas">N Faixas:</label>
+      <input type="text" id="nfaixas" class="form-control"><br>
+      <label for="ano">Ano:</label>
+      <input type="number" id="ano" class="form-control"><br>
+      <button class="btn btn-primary" onclick="salvarAlteracoes()">Salvar</button>
+      <button class="btn btn-default" onclick="fecharedicao()">Cancelar</button>
+    </div>
+  </div>
+  
+   <div id="CriarDisco" class="criarDisco">
+    <div class="conteudo-edicao">
+      <span class="fechar" onclick="fecharInserção()"></span>
+      <h2>Criar Disco</h2>
+       <label for="album">Álbum:</label>
+      <input type="text" id="album" class="form-control"><br>
+      <label for="artista">Artista:</label>
+      <input type="text" id="artista" class="form-control"><br>
+      <label for="gravadora">Gravadora:</label>
+      <input type="text" id="gravadora" class="form-control"><br>
+      <label for="nfaixas">N Faixas:</label>
+      <input type="text" id="nfaixas" class="form-control"><br>
+      <label for="ano">Ano:</label>
+      <input type="number" id="ano" class="form-control"><br>
+      <button class="btn btn-primary" onclick="salvarInserção()">Salvar</button>
+      <button class="btn btn-default" onclick="fecharInserção()">Cancelar</button>
+    </div>
+  </div>
+
+  <script>
+    var edicao = document.getElementById("editar");
+    var criarDisco = document.getElementById("CriarDisco");
+
+    function abrirEdicao(disco) {
+      edicao.style.display = "block";
+      if (disco === 'darkside') {
+        document.getElementById("album").value = "The Dark Side of the Moon";
+        document.getElementById("artista").value = "Pink Floyd";
+        document.getElementById("gravadora").value = "Harvest Records";
+        document.getElementById("nfaixas").value = "10";
+        document.getElementById("ano").value = "1973";
+      } else if (disco === 'thriller') {
+        document.getElementById("album").value = "Thriller";
+        document.getElementById("artista").value = "Michael Jackson";
+        document.getElementById("gravadora").value = "Epic Records";
+        document.getElementById("nfaixas").value = "9";
+        document.getElementById("ano").value = "1982";
+      } else if (disco === 'credence') {
+        document.getElementById("album").value = "Cosmo's Factory";
+        document.getElementById("artista").value = "Creedence Clearwater Revival";
+        document.getElementById("gravadora").value = "Fantasy Records";
+        document.getElementById("nfaixas").value = "11";
+        document.getElementById("ano").value = "1970";
+      }
+    }
+
+    function fecharedicao() {
+      edicao.style.display = "none";
+    }
+
+    function salvarAlteracoes() {
+      alert("Alterações salvas!");
+      fecharedicao();
+    }
+
+    function adicionarDisco() {
+      criarDisco.style.display = "block";
+    }
+
+    function fecharInserção() {
+      criarDisco.style.display = "none";
+    }
+
+    function salvarInserção() {
+      alert("Disco Adicionado!");
+      fecharInserção();
+    }
+
+    function removerDisco(id) {
+      document.getElementById(id).style.display = "none";
+      alert("Disco removido!");
+    }
+
+    function pesquisar() {
+      var input = document.getElementById("pesquisarDisco");
+      var filter = input.value.toUpperCase();
+      var produtos = document.getElementsByClassName("produto");
+      for (var i = 0; i < produtos.length; i++) {
+        var titulo = produtos[i].getElementsByTagName("p")[0];
+        var txtValue = titulo.textContent || titulo.innerText;
+        produtos[i].style.display = txtValue.toUpperCase().indexOf(filter) > -1 ? "" : "none";
+      }
+    }
+  </script>
+</body>
+
+</html>
