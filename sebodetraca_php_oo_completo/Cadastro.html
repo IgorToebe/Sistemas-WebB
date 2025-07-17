@@ -130,7 +130,7 @@
   </div>
 
   <script>
-    document.getElementById('cadastroForm').addEventListener('submit', function (e) {
+    document.getElementById('cadastroForm').addEventListener('submit', async function (e) {
       e.preventDefault();
 
       const nome = document.getElementById('nome').value;
@@ -152,25 +152,25 @@
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
-            nome: nomeCompleto,
-            email: emailUsuario,
-            senha: senhaUsuario
+            nome: nome,
+            email: email,
+            senha: senha
           })
         });
 
         const dados = await resposta.json();
 
         if (resposta.ok && dados.success) {
-          alert(Usuário ${nomeCompleto} cadastrado com sucesso!);
+          alert(`Usuário ${nome} cadastrado com sucesso!`);
           window.location.href = 'Login.html';
         } else {
-          mensagemErro.textContent = dados.message || 'Erro ao cadastrar usuário. Tente novamente.';
-          mensagemErro.style.display = 'block';
+          erro.textContent = dados.message || 'Erro ao cadastrar usuário. Tente novamente.';
+          erro.style.display = 'block';
         }
-      } catch (erro) {
-        console.error('Erro ao cadastrar:', erro);
-        mensagemErro.textContent = 'Erro de conexão. Tente novamente.';
-        mensagemErro.style.display = 'block';
+      } catch (error) {
+        console.error('Erro ao cadastrar:', error);
+        erro.textContent = 'Erro de conexão. Tente novamente.';
+        erro.style.display = 'block';
       }
     });
   </script>
