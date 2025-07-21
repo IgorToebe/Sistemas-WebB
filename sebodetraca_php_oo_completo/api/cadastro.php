@@ -1,22 +1,49 @@
 <?php
-require_once 'classes/Usuario.php';
+// cadastro.php - Refatorado para ser um Endpoint de API
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $nome = $_POST['nome'];
-    $email = $_POST['email'];
-    $senha = $_POST['senha'];
+// Padronizando o caminho para a pasta 'api'
+require_once 'api/classes/Usuario.php';
 
+header('Content-Type: application/json');
+
+if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+    http_response_code(405);
+    echo json_encode(['success' => false, 'message' => 'Método não permitido.']);
+    exit;
+}
+
+// Lê o corpo da requisição JSON, que virá do fetch do Cadastro.html
+$input = json_decode(file_get_contents('php://input'), true);
+
+$nome = $input['nome'] ?? '';
+$email = $input['email'] ?? '';
+$senha = $input['senha'] ?? '';
+
+if (empty($nome) || empty($email) || empty($senha)) {
+    http_response_code(400);
+    echo json_encode(['success' => false, 'message' => 'Todos os campos são obrigatórios.']);
+    exit;
+}
+
+try {
+    // A classe Usuario já faz o hash da senha no construtor
     $usuario = new Usuario($nome, $email, $senha);
+
     if ($usuario->salvar()) {
-        echo "Usuário cadastrado com sucesso! <a href='login.php'>Fazer login</a>";
+        http_response_code(201); // 201 Created
+        echo json_encode(['success' => true, 'message' => 'Usuário cadastrado com sucesso!']);
     } else {
-        echo "Erro ao cadastrar usuário.";
+        http_response_code(500); // Erro Interno do Servidor
+        echo json_encode(['success' => false, 'message' => 'Erro ao salvar no banco de dados.']);
+    }
+} catch (PDOException $e) {
+    // Captura erros de violação de chave única (ex: email duplicado)
+    if ($e->getCode() == 23505) { // Código de erro para unique_violation no PostgreSQL
+        http_response_code(409); // Conflict
+        echo json_encode(['success' => false, 'message' => 'Este e-mail já está cadastrado.']);
+    } else {
+        http_response_code(500);
+        echo json_encode(['success' => false, 'message' => 'Erro no servidor: ' . $e->getMessage()]);
     }
 }
 ?>
-<form method="POST" action="">
-  <label>Nome: <input type="text" name="nome" required></label><br>
-  <label>Email: <input type="email" name="email" required></label><br>
-  <label>Senha: <input type="password" name="senha" required></label><br>
-  <button type="submit">Cadastrar</button>
-</form>

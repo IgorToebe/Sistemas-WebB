@@ -132,30 +132,50 @@
                 <button type="submit">Entrar</button>
             </form>
             <p class="error-message" id="errorMessage"></p>
-            <p class="signup-link">Não tem uma conta? <a href="file:///C:/Users/Jos%C3%A9%20Vinicius/Desktop/Sistemas%20Web/Cadastro.html">Cadastre-se aqui</a></p>
+            <p class="signup-link">Não tem uma conta? <a href="Cadastro.html">Cadastre-se aqui</a></p>
         </div>
     </div>
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const loginForm = document.getElementById('loginForm');
-            const errorMessage = document.getElementById('errorMessage');
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const loginForm = document.getElementById('loginForm');
+        const errorMessage = document.getElementById('errorMessage');
 
-            loginForm.addEventListener('submit', (event) => {
-                event.preventDefault();
+        loginForm.addEventListener('submit', async (event) => { // Tornando a função assíncrona
+            event.preventDefault();
 
-                const email = document.getElementById('email').value;
-                const password = document.getElementById('password').value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            errorMessage.style.display = 'none';
 
-                if (email === 'teste@sebodetraca.com.br' && password === '12345') { // Login e senha de acesso.
-                    errorMessage.textContent = '';
-                    errorMessage.style.display = 'none';
-                    window.location.href = 'Home.html';
+            try {
+                // Requisição para o endpoint 'login.php' que acabamos de criar
+                const response = await fetch('login.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ 
+                        email: email, 
+                        password: password 
+                    })
+                });
+
+                const data = await response.json();
+
+                if (response.ok) { // Se a resposta do servidor for OK (status 200-299)
+                    window.location.href = 'Home.html'; // Redireciona para a home
                 } else {
-                    errorMessage.textContent = 'E-mail ou senha incorretos. Tente novamente.';
+                    // Caso contrário, exibe a mensagem de erro vinda do servidor
+                    errorMessage.textContent = data.message || 'Erro ao tentar fazer login.';
                     errorMessage.style.display = 'block';
                 }
-            });
+            } catch (error) {
+                console.error('Erro de conexão:', error);
+                errorMessage.textContent = 'Falha de conexão com o servidor.';
+                errorMessage.style.display = 'block';
+            }
         });
-    </script>
+    });
+</script>
 </body>
 </html>
