@@ -161,8 +161,8 @@
         const dados = await resposta.json();
 
         if (resposta.ok && dados.success) {
-          alert(Usuário ${nomeCompleto} cadastrado com sucesso!);
-          window.location.href = 'Login.html';
+          alert(`Usuário ${nomeCompleto} cadastrado com sucesso!`);
+          window.location.href = 'index.html';
         } else {
           mensagemErro.textContent = dados.message || 'Erro ao cadastrar usuário. Tente novamente.';
           mensagemErro.style.display = 'block';
